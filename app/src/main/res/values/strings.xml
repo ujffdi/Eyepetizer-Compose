@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Eyepetizer</string>
+
+    <string name="page_home">首页</string>
+    <string name="square">广场</string>
+    <string name="found">发现</string>
+    <string name="mine">我的</string>
 </resources>

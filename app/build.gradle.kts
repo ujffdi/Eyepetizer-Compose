@@ -62,6 +62,10 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    // Compose 其他组件
+    implementation("androidx.compose.material:material:1.5.0")
+    implementation("androidx.compose.material:material-icons-core:1.5.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
 
     // Compose 导航：https://voyager.adriel.cafe/setup
     val voyagerVersion = "1.0.0"
