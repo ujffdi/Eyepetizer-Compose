@@ -67,6 +67,13 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core:1.5.0")
     implementation("androidx.activity:activity-compose:1.8.2")
 
+    // Compose 加载图片:https://github.com/coil-kt/coil
+    //implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // MVI
+    //implementation("com.airbnb.android:mavericks:3.0.9")
+    //implementation("com.airbnb.android:mavericks-compose:3.0.9")
+
     // Compose 导航：https://voyager.adriel.cafe/setup
     val voyagerVersion = "1.0.0"
     // Navigator
