@@ -4,6 +4,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,18 +23,17 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,7 +66,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Composable fun Content() {
+    @Composable
+    fun Content() {
         TabNavigator(HomeScreen, tabDisposable = {
             TabDisposable(
                 navigator = it, tabs = listOf(HomeScreen, SquareScreen, FoundScreen, MineScreen)
@@ -89,7 +100,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Composable private fun RowScope.TabNavigationItem(tab: Tab) {
+    @Composable
+    private fun RowScope.TabNavigationItem(tab: Tab) {
         val tabNavigator = LocalTabNavigator.current
 
         BottomNavigationItem(
@@ -100,7 +112,9 @@ class MainActivity : ComponentActivity() {
         )
     }
 
-    @Preview(showBackground = true) @Composable fun GreetingPreview() {
+    @Preview(showBackground = true)
+    @Composable
+    fun GreetingPreview() {
         EyepetizerTheme {
             Content()
         }

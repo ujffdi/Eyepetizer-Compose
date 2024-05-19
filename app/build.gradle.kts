@@ -1,6 +1,8 @@
 plugins {
-    id("com.android.application")
+    id("kotlin-kapt")
+    //id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.android")
+    id("com.android.application")
 }
 
 android {
@@ -74,6 +76,11 @@ dependencies {
     //implementation("com.airbnb.android:mavericks:3.0.9")
     //implementation("com.airbnb.android:mavericks-compose:3.0.9")
 
+    // hilt 依赖注入
+
+    //implementation("com.google.dagger:hilt-android:2.44")
+    //kapt("com.google.dagger:hilt-android-compiler:2.44")
+
     // Compose 导航：https://voyager.adriel.cafe/setup
     val voyagerVersion = "1.0.0"
     // Navigator
@@ -93,3 +100,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
+
+//kapt {
+//    correctErrorTypes = true
+//}
