@@ -1,6 +1,6 @@
 plugins {
     id("kotlin-kapt")
-    //id("com.google.dagger.hilt.android")
+    id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.android")
     id("com.android.application")
 }
@@ -68,18 +68,18 @@ dependencies {
     implementation("androidx.compose.material:material:1.6.7")
     implementation("androidx.compose.material:material-icons-core:1.6.7")
     implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Compose 加载图片:https://github.com/coil-kt/coil
-    //implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     // MVI
     //implementation("com.airbnb.android:mavericks:3.0.9")
     //implementation("com.airbnb.android:mavericks-compose:3.0.9")
 
     // hilt 依赖注入
-
-    //implementation("com.google.dagger:hilt-android:2.44")
-    //kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
 
     // Compose 导航：https://voyager.adriel.cafe/setup
     val voyagerVersion = "1.0.0"
@@ -101,6 +101,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
 
-//kapt {
-//    correctErrorTypes = true
-//}
+kapt {
+    correctErrorTypes = true
+}

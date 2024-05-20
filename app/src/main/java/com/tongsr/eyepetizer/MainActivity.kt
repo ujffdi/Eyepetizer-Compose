@@ -48,7 +48,9 @@ import com.tongsr.eyepetizer.business.HomeScreen
 import com.tongsr.eyepetizer.business.MineScreen
 import com.tongsr.eyepetizer.business.SquareScreen
 import com.tongsr.eyepetizer.ui.theme.EyepetizerTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
