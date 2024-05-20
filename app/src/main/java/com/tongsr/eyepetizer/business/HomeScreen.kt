@@ -1,5 +1,6 @@
 package com.tongsr.eyepetizer.business
 
+import android.graphics.Paint.Align
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
@@ -23,11 +25,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -69,34 +73,42 @@ object HomeScreen : Tab {
             3
         })
 
-
         Column {
-            TabRow(
-                selectedTabIndex = pagerState.currentPage,
-                modifier = Modifier.height(50.dp)
+            TabRow(selectedTabIndex = pagerState.currentPage,
+                divider = {}, // 去除下划线
+                indicator = {} // 去除 TabRow 下划线
             ) {
-
                 val coroutineScope = rememberCoroutineScope()
 
                 tabList.forEachIndexed { index, title ->
-                    Row(
+                    Box(
                         Modifier
+                            .height(50.dp)
                             .background(Color.White)
                             .clickable {
                                 coroutineScope.launch {
                                     pagerState.scrollToPage(index)
                                 }
-                            }) {
-                        if (pagerState.currentPage == index) {
-                            Image(
-                                painter = painterResource(id = R.drawable.icon_nav_indicator),
-                                contentDescription = "",
-                                modifier = Modifier.size(15.dp, 15.dp)
+                            },
+                        contentAlignment = Alignment.Center // 将子元素居中对齐
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (pagerState.currentPage == index) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.icon_nav_indicator),
+                                    contentDescription = "",
+                                    modifier = Modifier.size(15.dp, 15.dp),
+                                )
+                            }
+                            Text(
+                                text = title,
+                                modifier = Modifier.padding(start = if (pagerState.currentPage == index) 8.dp else 0.dp),
+                                color = Color.Black,
+                                fontSize = 16.sp,
                             )
                         }
-                        Text(
-                            text = title, modifier = Modifier.fillMaxSize()
-                        )
                     }
                 }
             }
@@ -111,5 +123,13 @@ object HomeScreen : Tab {
             }
         }
     }
+
+
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun Preview() {
 
 }
