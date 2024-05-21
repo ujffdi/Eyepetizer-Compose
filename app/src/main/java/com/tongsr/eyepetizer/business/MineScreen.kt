@@ -16,6 +16,7 @@ import com.tongsr.eyepetizer.R
  * @description 我的
  */
 object MineScreen : Tab {
+    private fun readResolve(): Any = MineScreen
 
     override val options: TabOptions
         @Composable get() {

@@ -55,6 +55,7 @@ dependencies {
 
     // Jetpack
     implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
     // Compose
@@ -72,6 +73,8 @@ dependencies {
 
     // Compose 加载图片:https://github.com/coil-kt/coil
     implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("com.github.qqnp1100:SVGAPlayer-Android:1.0.9")
+
 
     // MVI
     //implementation("com.airbnb.android:mavericks:3.0.9")
