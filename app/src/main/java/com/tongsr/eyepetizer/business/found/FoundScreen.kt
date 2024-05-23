@@ -1,14 +1,10 @@
-package com.tongsr.eyepetizer.business
+package com.tongsr.eyepetizer.business.found
 
-import android.util.Log
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.viewinterop.AndroidView
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
@@ -22,6 +18,7 @@ import com.tongsr.eyepetizer.R
  * @description 发现
  */
 object FoundScreen : Tab {
+    private fun readResolve(): Any = FoundScreen
 
     override val options: TabOptions
         @Composable get() {
@@ -61,6 +58,22 @@ object FoundScreen : Tab {
                 Log.e("SVGAImageView", "update")
             }, modifier = Modifier.fillMaxSize()
             )
+        }
+    }
+
+    @OptIn(ExperimentalFoundationApi::class)
+    @Composable
+    fun Banner(modifier: Modifier = Modifier) {
+        val pagerState = rememberPagerState(pageCount = { 3 })
+        HorizontalPager(state = pagerState) { page ->
+
+        }
+    }
+
+    @Composable
+    fun BannerItem(modifier: Modifier = Modifier, url: String) {
+        ConstraintLayout {
+
         }
     }
 

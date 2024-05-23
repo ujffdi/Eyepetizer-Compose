@@ -29,7 +29,7 @@ import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabDisposable
 import cafe.adriel.voyager.navigator.tab.TabNavigator
-import com.tongsr.eyepetizer.business.FoundScreen
+import com.tongsr.eyepetizer.business.found.FoundScreen
 import com.tongsr.eyepetizer.business.HomeScreen
 import com.tongsr.eyepetizer.business.MineScreen
 import com.tongsr.eyepetizer.business.SquareScreen
