@@ -52,10 +52,9 @@ android {
 }
 
 dependencies {
-
     // Jetpack
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
     // Compose
@@ -65,6 +64,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+
     // Compose 其他组件
     implementation("androidx.compose.material:material:1.6.7")
     implementation("androidx.compose.material:material-icons-core:1.6.7")
@@ -75,14 +75,22 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("com.github.qqnp1100:SVGAPlayer-Android:1.0.9")
 
-
     // MVI
-    //implementation("com.airbnb.android:mavericks:3.0.9")
-    //implementation("com.airbnb.android:mavericks-compose:3.0.9")
+    implementation("com.airbnb.android:mavericks:3.0.9")
+    implementation("com.airbnb.android:mavericks-hilt:3.0.9")
+    implementation("com.airbnb.android:mavericks-compose:3.0.9")
+
+    // 网络请求
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.moshi:moshi:1.15.1")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // hilt 依赖注入
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
     // Compose 导航：https://voyager.adriel.cafe/setup
     val voyagerVersion = "1.0.0"
@@ -98,7 +106,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.04.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

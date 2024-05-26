@@ -1,10 +1,18 @@
 package com.tongsr.eyepetizer.business.found
 
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.constraintlayout.compose.ConstraintLayout
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
@@ -39,26 +47,7 @@ object FoundScreen : Tab {
 
     @Composable
     override fun Content() {
-        Box(modifier = Modifier.fillMaxSize()) {
-            AndroidView(factory = { context ->
-                SVGAImageView(context).apply {
-                    val parser = SVGAParser.shareParser()
-                    parser.decodeFromAssets("lucky_gift_combo_count_1314.svga",
-                        object : SVGAParser.ParseCompletion {
-                            override fun onComplete(videoItem: com.opensource.svgaplayer.SVGAVideoEntity) {
-                                setVideoItem(videoItem)
-                                startAnimation()
-                            }
 
-                            override fun onError() {
-                            }
-                        })
-                }
-            }, update = {
-                Log.e("SVGAImageView", "update")
-            }, modifier = Modifier.fillMaxSize()
-            )
-        }
     }
 
     @OptIn(ExperimentalFoundationApi::class)

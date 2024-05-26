@@ -30,7 +30,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.tongsr.eyepetizer.R
 import com.tongsr.eyepetizer.business.home.DailyReportScreen
 import com.tongsr.eyepetizer.business.home.FollowScreen
-import com.tongsr.eyepetizer.business.home.RecommendedScreen
+import com.tongsr.eyepetizer.business.home.recommended.RecommendedScreen
 import kotlinx.coroutines.launch
 
 /**

@@ -1,8 +1,10 @@
-package com.tongsr.eyepetizer.business.home
+package com.tongsr.eyepetizer.business.home.recommended
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -24,6 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
+import com.airbnb.mvrx.compose.collectAsState
+import com.airbnb.mvrx.compose.mavericksViewModel
+import com.squareup.moshi.Moshi
 import com.tongsr.eyepetizer.R
 
 /**
@@ -34,12 +40,19 @@ import com.tongsr.eyepetizer.R
  * @description 推荐页面
  */
 @Composable
-fun RecommendedScreen() {
-    LazyColumn {
-        items(20) {
-            WinnowItem()
-        }
-    }
+fun RecommendedScreen(
+    viewModel: RecommendedViewModel = mavericksViewModel()
+) {
+    val model by viewModel.collectAsState(RecommendedState::model)
+    Log.e("tongsr", "show text$model")
+    Text(text = model().toString(), modifier = Modifier
+        .fillMaxSize())
+
+//    LazyColumn {
+//        items(20) {
+//            WinnowItem()
+//        }
+//    }
 }
 
 /**
@@ -88,30 +101,35 @@ fun WinnowItem() {
                     bottom.linkTo(parent.bottom)
                 })
 
-        Text(text = "吓到腿软！世界最长的跳台滑雪记录",
+        Text(
+            text = "吓到腿软！世界最长的跳台滑雪记录",
             modifier = Modifier
                 .padding(top = 18.dp)
                 .constrainAs(title) {
                     top.linkTo(avatar.top)
                     start.linkTo(avatar.end)
-                }, fontSize = 16.sp
+                },
+            fontSize = 16.sp
         )
 
-        Text(text = "开眼运动精选 #运动",
+        Text(
+            text = "开眼运动精选 #运动",
             modifier = Modifier
                 .padding(top = 10.dp)
                 .constrainAs(subtitle) {
                     start.linkTo(avatar.end)
                     top.linkTo(title.bottom)
-                }, fontSize = 14.sp
+                },
+            fontSize = 14.sp
         )
 
-        Text(text = "▶ 08:11", modifier = Modifier
-            .padding(start = 20.dp)
-            .constrainAs(duration) {
-                bottom.linkTo(subtitle.bottom)
-                start.linkTo(subtitle.end)
-            }, fontSize = 14.sp
+        Text(
+            text = "▶ 08:11", modifier = Modifier
+                .padding(start = 20.dp)
+                .constrainAs(duration) {
+                    bottom.linkTo(subtitle.bottom)
+                    start.linkTo(subtitle.end)
+                }, fontSize = 14.sp
         )
     }
 }

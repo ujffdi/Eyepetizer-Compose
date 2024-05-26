@@ -1,6 +1,7 @@
 package com.tongsr.eyepetizer
 
 import android.app.Application
+import com.airbnb.mvrx.Mavericks
 import com.opensource.svgaplayer.SVGACache
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.utils.log.SVGALogger
@@ -18,9 +19,13 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         SVGACache.onCreate(this, SVGACache.Type.DEFAULT)
         SVGALogger.setLogEnabled(true)
         SVGAParser.shareParser().init(this)
+
+        Mavericks.initialize(this)
+
     }
 
 }
