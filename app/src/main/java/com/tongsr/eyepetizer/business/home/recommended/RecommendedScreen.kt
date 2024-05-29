@@ -1,6 +1,7 @@
 package com.tongsr.eyepetizer.business.home.recommended
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,6 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.compose.collectAsState
 import com.airbnb.mvrx.compose.mavericksViewModel
 import com.squareup.moshi.Moshi
@@ -44,104 +50,34 @@ fun RecommendedScreen(
     viewModel: RecommendedViewModel = mavericksViewModel()
 ) {
     val model by viewModel.collectAsState(RecommendedState::model)
-    Log.e("tongsr", "show text$model")
-    Text(text = model().toString(), modifier = Modifier
-        .fillMaxSize())
+
+    Log.e("tongsr", "绘制")
+    when (model) {
+        is Loading -> {
+            Log.e("tongsr", "Loading")
+            Text(text = "加载中11", modifier = Modifier
+                .fillMaxSize())
+        }
+
+        is Success -> {
+            Log.e("tongsr", "Success")
+            AnimatedVisibility(visible = true) {
+                Text(text = "1111${model().toString()}", modifier = Modifier
+                    .fillMaxSize())
+            }
+        }
+
+        is Fail -> {
+
+        }
+        Uninitialized -> {
+
+        }
+    }
 
 //    LazyColumn {
 //        items(20) {
 //            WinnowItem()
 //        }
 //    }
-}
-
-/**
- * 精选 Item。
- */
-@Composable
-fun WinnowItem() {
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(bottom = 30.dp)
-    ) {
-        val (image, title, avatar, subtitle, duration) = createRefs()
-
-        Image(painter = rememberAsyncImagePainter("https://img.lamilive.com/FuvHZylf2yFZZ2uoj8wKBqUjaczF?imageslim"),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .constrainAs(image) {
-                    top.linkTo(parent.top)
-                })
-
-        Image(painter = painterResource(id = R.drawable.ic_handpick_white),
-            contentDescription = null,
-            modifier = Modifier
-                .constrainAs(createRef()) {
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                }
-                .padding(8.dp))
-
-        Image(painter = rememberAsyncImagePainter("https://img.lamilive.com/FghiYJPYu7VaVQ0ttinv73q6KGZd?imageslim"),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .padding(15.dp)
-                .size(40.dp)
-                .clip(CircleShape)
-                .border(2.dp, Color.Gray, CircleShape)
-                .constrainAs(avatar) {
-                    top.linkTo(image.bottom)
-                    start.linkTo(parent.start)
-                    bottom.linkTo(parent.bottom)
-                })
-
-        Text(
-            text = "吓到腿软！世界最长的跳台滑雪记录",
-            modifier = Modifier
-                .padding(top = 18.dp)
-                .constrainAs(title) {
-                    top.linkTo(avatar.top)
-                    start.linkTo(avatar.end)
-                },
-            fontSize = 16.sp
-        )
-
-        Text(
-            text = "开眼运动精选 #运动",
-            modifier = Modifier
-                .padding(top = 10.dp)
-                .constrainAs(subtitle) {
-                    start.linkTo(avatar.end)
-                    top.linkTo(title.bottom)
-                },
-            fontSize = 14.sp
-        )
-
-        Text(
-            text = "▶ 08:11", modifier = Modifier
-                .padding(start = 20.dp)
-                .constrainAs(duration) {
-                    bottom.linkTo(subtitle.bottom)
-                    start.linkTo(subtitle.end)
-                }, fontSize = 14.sp
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewWinnowItem() {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        WinnowItem()
-    }
 }

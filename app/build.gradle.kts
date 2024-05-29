@@ -57,6 +57,9 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
+    
+    implementation("com.google.guava:guava:30.1.1-android")
+
     // Compose
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation(platform("androidx.compose:compose-bom:2023.04.01"))
@@ -68,7 +71,6 @@ dependencies {
     // Compose 其他组件
     implementation("androidx.compose.material:material:1.6.7")
     implementation("androidx.compose.material:material-icons-core:1.6.7")
-    implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Compose 加载图片:https://github.com/coil-kt/coil

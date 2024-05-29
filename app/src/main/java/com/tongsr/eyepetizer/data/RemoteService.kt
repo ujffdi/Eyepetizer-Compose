@@ -1,6 +1,6 @@
 package com.tongsr.eyepetizer.data
 
-import com.tongsr.eyepetizer.business.home.recommended.RecommendedModel
+import com.tongsr.eyepetizer.business.home.dailyissue.DailyIssueModel
 import retrofit2.http.GET
 
 /**
@@ -18,5 +18,11 @@ interface RemoteService {
     @GET("/api/v4/tabs/selected")
     suspend fun getRecommendedData(): Any
 
+
+    /**
+     * 获取日报数据
+     */
+    @GET("/api/v4/tabs/selected")
+    suspend fun getDailyIssueData(): BaseModel<DailyIssueModel>
 
 }

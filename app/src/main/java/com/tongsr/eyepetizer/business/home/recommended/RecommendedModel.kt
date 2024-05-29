@@ -13,7 +13,7 @@ data class RecommendedModel(
     val date: Long,
     val itemList: List<Item>,
     val lastStartId: Int,
-    val nextPageUrl: String,
+    val nextPageUrl: String? = null,
     val nextPublishTime: Long,
     val refreshCount: Int,
     val total: Int
@@ -41,7 +41,7 @@ data class Data(
     val descriptionEditor: String,
     val descriptionPgc: String,
     val duration: Int,
-    val font: String? =  null,
+    val font: String? = null,
     val header: Header? = null,
     val id: Int,
     val idx: Int,

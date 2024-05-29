@@ -33,7 +33,6 @@ class RecommendedViewModel @AssistedInject constructor(
         suspend {
             repository.getRecommendedData()
         }.execute {
-            Log.e("tongsr", "copy")
             copy(model = it)
         }
     }

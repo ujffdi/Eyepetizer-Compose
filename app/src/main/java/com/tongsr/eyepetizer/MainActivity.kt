@@ -21,9 +21,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -55,7 +57,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun Content() {
+    private fun Content() {
         TabNavigator(HomeScreen, tabDisposable = {
             TabDisposable(
                 navigator = it, tabs = listOf(HomeScreen, SquareScreen, FoundScreen, MineScreen)

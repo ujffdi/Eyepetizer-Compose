@@ -7,9 +7,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.TabRow
@@ -28,8 +30,8 @@ import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.tongsr.eyepetizer.R
-import com.tongsr.eyepetizer.business.home.DailyReportScreen
 import com.tongsr.eyepetizer.business.home.FollowScreen
+import com.tongsr.eyepetizer.business.home.dailyissue.DailyIssueScreen
 import com.tongsr.eyepetizer.business.home.recommended.RecommendedScreen
 import kotlinx.coroutines.launch
 
@@ -39,8 +41,6 @@ import kotlinx.coroutines.launch
  * @description 首页
  */
 object HomeScreen : Tab {
-
-    private val tabList = listOf("推荐", "关注", "日报")
 
     override val options: TabOptions
         @Composable get() {
@@ -62,28 +62,45 @@ object HomeScreen : Tab {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
+        val tabList = listOf(
+            stringResource(id = R.string.recommended),
+            stringResource(id = R.string.follow),
+            stringResource(id = R.string.daily_issue)
+        )
+
         val pagerState = rememberPagerState(pageCount = { 3 })
 
         Column {
-            TabRow(selectedTabIndex = pagerState.currentPage,
-                divider = {}, // 去除下划线
-                indicator = {} // 去除 TabRow 下划线
-            ) {
-                val coroutineScope = rememberCoroutineScope()
-                tabList.forEachIndexed { index, title ->
-                    Tab(pagerState.currentPage, index, title) {
-                        coroutineScope.launch {
-                            pagerState.scrollToPage(index)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_eyepeziter_black),
+                    contentDescription = null,
+                    modifier = Modifier.absolutePadding(left = 10.dp, right = 40.dp).height(15.dp)
+                )
+                TabRow(selectedTabIndex = pagerState.currentPage, divider = {}, // 去除下划线
+                    indicator = {}, // 去除 TabRow 下划线
+                    modifier = Modifier.weight(1f, false)
+                ) {
+                    val coroutineScope = rememberCoroutineScope()
+                    tabList.forEachIndexed { index, title ->
+                        Tab(pagerState.currentPage, index, title) {
+                            coroutineScope.launch {
+                                pagerState.scrollToPage(index)
+                            }
                         }
                     }
                 }
+                Image(
+                    painter = painterResource(id = R.drawable.ic_notification),
+                    contentDescription = null,
+                )
             }
 
             HorizontalPager(state = pagerState) { page ->
-                when(page) {
+                when (page) {
                     0 -> RecommendedScreen()
                     1 -> FollowScreen()
-                    2 -> DailyReportScreen()
+                    2 -> DailyIssueScreen()
                 }
             }
         }
@@ -107,14 +124,14 @@ object HomeScreen : Tab {
                     Image(
                         painter = painterResource(id = R.drawable.icon_nav_indicator),
                         contentDescription = "",
-                        modifier = Modifier.size(15.dp, 15.dp),
+                        modifier = Modifier.size(12.dp, 12.dp),
                     )
                 }
                 Text(
                     text = title,
-                    modifier = Modifier.padding(start = if (currentPage == index) 8.dp else 0.dp),
+                    modifier = Modifier.padding(start = if (currentPage == index) 5.dp else 0.dp),
                     color = Color.Black,
-                    fontSize = 16.sp,
+                    fontSize = 15.sp,
                 )
             }
         }

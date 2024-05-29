@@ -3,6 +3,7 @@ package com.tongsr.eyepetizer.hilt
 import com.airbnb.mvrx.hilt.AssistedViewModelFactory
 import com.airbnb.mvrx.hilt.MavericksViewModelComponent
 import com.airbnb.mvrx.hilt.ViewModelKey
+import com.tongsr.eyepetizer.business.home.dailyissue.DailyIssueViewModel
 import com.tongsr.eyepetizer.business.home.recommended.RecommendedViewModel
 import dagger.Binds
 import dagger.Module
@@ -24,5 +25,10 @@ interface ViewModelsModule {
     @IntoMap
     @ViewModelKey(RecommendedViewModel::class)
     fun recommendedViewModelFactory(factory: RecommendedViewModel.Factory): AssistedViewModelFactory<*, *>
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DailyIssueViewModel::class)
+    fun dailyIssueViewModelFactory(factory: DailyIssueViewModel.Factory): AssistedViewModelFactory<*, *>
 
 }
