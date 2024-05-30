@@ -1,6 +1,5 @@
 package com.tongsr.eyepetizer.business.home.dailyissue
 
-import com.google.common.collect.ImmutableList
 import com.tongsr.eyepetizer.data.RemoteService
 import javax.inject.Inject
 
@@ -13,9 +12,9 @@ import javax.inject.Inject
  */
 class DailyIssueRepository @Inject constructor(private val service: RemoteService) {
 
-    suspend fun getDailyIssueData(): ImmutableList<DailyIssueModel> {
+    suspend fun getDailyIssueData(): List<DailyIssueModel> {
         val dailyIssueData = service.getDailyIssueData()
-        return dailyIssueData.itemList ?: ImmutableList.of()
+        return dailyIssueData.itemList ?: emptyList()
     }
 
 }

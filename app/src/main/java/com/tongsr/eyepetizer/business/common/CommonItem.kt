@@ -1,10 +1,8 @@
 package com.tongsr.eyepetizer.business.common
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,13 +16,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import coil.compose.rememberAsyncImagePainter
+import androidx.constraintlayout.compose.Dimension
+import coil.compose.AsyncImage
 import com.tongsr.eyepetizer.R
 
 /**
@@ -37,27 +35,38 @@ import com.tongsr.eyepetizer.R
  * 精选 Item。
  */
 @Composable
-fun WinnowItem() {
+fun WinnowItem(
+    avatarUrl: String,
+    title: String,
+    subtitle: String,
+    coverUrl: String,
+    clickable: (() -> Unit)? = null
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(bottom = 30.dp)
+            .clickable {
+                clickable?.invoke()
+            }
     ) {
-        val (image, title, avatar, subtitle) = createRefs()
+        val (coverRef, titleRef, avatarRef, subtitleRef) = createRefs()
 
-        Image(painter = rememberAsyncImagePainter("https://img.lamilive.com/FuvHZylf2yFZZ2uoj8wKBqUjaczF?imageslim"),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
+        AsyncImage(
+            model = coverUrl,
+            contentDescription = "cover",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .constrainAs(image) {
+                .constrainAs(coverRef) {
                     top.linkTo(parent.top)
-                })
+                },
+            contentScale = ContentScale.Crop,
+        )
 
         Image(painter = painterResource(id = R.drawable.ic_handpick_white),
-            contentDescription = null,
+            contentDescription = "winnow",
             modifier = Modifier
                 .constrainAs(createRef()) {
                     top.linkTo(parent.top)
@@ -65,53 +74,45 @@ fun WinnowItem() {
                 }
                 .padding(8.dp))
 
-        Image(painter = rememberAsyncImagePainter("https://img.lamilive.com/FghiYJPYu7VaVQ0ttinv73q6KGZd?imageslim"),
-            contentDescription = null,
+        AsyncImage(model = avatarUrl,
+            contentDescription = "avatar",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(15.dp)
                 .size(40.dp)
                 .clip(CircleShape)
                 .border(2.dp, Color.Gray, CircleShape)
-                .constrainAs(avatar) {
-                    top.linkTo(image.bottom)
+                .constrainAs(avatarRef) {
+                    top.linkTo(coverRef.bottom)
                     start.linkTo(parent.start)
                     bottom.linkTo(parent.bottom)
                 })
 
         Text(
-            text = "吓到腿软！世界最长的跳台滑雪记录",
+            text = title,
             modifier = Modifier
-                .padding(top = 18.dp)
-                .constrainAs(title) {
-                    top.linkTo(avatar.top)
-                    start.linkTo(avatar.end)
+                .fillMaxWidth()
+                .padding(top = 18.dp, end = 5.dp)
+                .constrainAs(titleRef) {
+                    top.linkTo(avatarRef.top)
+                    start.linkTo(avatarRef.end)
+                    end.linkTo(parent.end)
+                    // 设置宽度为 wrapContent 才能显示 ...
+                    width = Dimension.preferredWrapContent
                 },
             fontSize = 16.sp,
-            fontWeight = FontWeight.W700
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+            fontWeight = FontWeight.W600
         )
 
         Text(
-            text = "开眼运动精选 #运动        ▶ 08:11",
-            modifier = Modifier
+            text = subtitle, modifier = Modifier
                 .padding(top = 10.dp)
-                .constrainAs(subtitle) {
-                    start.linkTo(avatar.end)
-                    top.linkTo(title.bottom)
-                },
-            fontSize = 14.sp
+                .constrainAs(subtitleRef) {
+                    start.linkTo(avatarRef.end)
+                    top.linkTo(titleRef.bottom)
+                }, fontSize = 14.sp
         )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewWinnowItem() {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        WinnowItem()
     }
 }

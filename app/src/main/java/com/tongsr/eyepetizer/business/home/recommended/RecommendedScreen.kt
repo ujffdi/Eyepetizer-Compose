@@ -51,16 +51,13 @@ fun RecommendedScreen(
 ) {
     val model by viewModel.collectAsState(RecommendedState::model)
 
-    Log.e("tongsr", "绘制")
     when (model) {
         is Loading -> {
-            Log.e("tongsr", "Loading")
             Text(text = "加载中11", modifier = Modifier
                 .fillMaxSize())
         }
 
         is Success -> {
-            Log.e("tongsr", "Success")
             AnimatedVisibility(visible = true) {
                 Text(text = "1111${model().toString()}", modifier = Modifier
                     .fillMaxSize())
