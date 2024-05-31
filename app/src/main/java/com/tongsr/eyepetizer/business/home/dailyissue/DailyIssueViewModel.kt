@@ -1,6 +1,5 @@
 package com.tongsr.eyepetizer.business.home.dailyissue
 
-import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.hilt.AssistedViewModelFactory
@@ -8,6 +7,7 @@ import com.airbnb.mvrx.hilt.hiltMavericksViewModelFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.launch
 
 /**
  * @author tongsr
@@ -25,14 +25,28 @@ class DailyIssueViewModel @AssistedInject constructor(
         getDailyIssueData()
     }
 
-    fun getDailyIssueData() = withState { state ->
-        if (state.dailyIssueList is Loading) return@withState
-        suspend {
-            repository.getDailyIssueData()
-        }.execute {
-            copy(dailyIssueList = it)
+    fun getDailyIssueData() {
+        viewModelScope.launch {
+            val dailyIssueData = repository.getDailyIssueData()
+            setState {
+                copy(dailyIssueList = dailyIssueData)
+            }
         }
     }
+
+    fun update(id: Int) = withState { state ->
+        setState {
+            val newList = state.dailyIssueList.mapIndexed { index, dailyIssueModel ->
+                if (index == id) {
+                    dailyIssueModel.copy(data = dailyIssueModel.data.copy(duration = 600))
+                } else {
+                    dailyIssueModel
+                }
+            }
+            copy(dailyIssueList = newList)
+        }
+    }
+
 
     @AssistedFactory
     interface Factory : AssistedViewModelFactory<DailyIssueViewModel, DailyIssueState> {

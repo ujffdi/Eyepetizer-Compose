@@ -6,17 +6,18 @@ package com.tongsr.eyepetizer.business.home.dailyissue
  * @description 日报 Model
  */
 
-class DailyIssueModel(
+data class DailyIssueModel(
     val data: Data, val id: Int
 )
 
-class Data(
+data class Data(
+    val id: Int? = 0,
     val author: Author? = null,
     val category: String? = null,
     val cover: Cover? = null,
     val date: Long? = null,
     val description: String? = null,
-    val duration: Int? = null,
+    var duration: Int? = null,
     val title: String? = null,
 )
 

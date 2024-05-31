@@ -1,5 +1,6 @@
 package com.tongsr.eyepetizer.business.home.dailyissue
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -22,6 +24,7 @@ import com.airbnb.mvrx.compose.mavericksViewModel
 import com.tongsr.eyepetizer.R
 import com.tongsr.eyepetizer.business.common.WinnowItem
 import com.tongsr.eyepetizer.util.secondsToHours
+import kotlin.random.Random
 
 /**
  * @author tongsr
@@ -32,56 +35,82 @@ import com.tongsr.eyepetizer.util.secondsToHours
  */
 @Composable
 fun DailyIssueScreen(viewModel: DailyIssueViewModel = mavericksViewModel()) {
-    val async by viewModel.collectAsState(DailyIssueState::dailyIssueList)
-    when(async) {
-        is Success -> {
-            val listState = rememberLazyListState()
+    Log.e("tongsr", "执行 DailyIssueScreen")
+    val list by viewModel.collectAsState()
+    val listState = rememberLazyListState()
+    LazyColumn(state = listState) {
 
-            async()?.let { list ->
-                LazyColumn(state = listState) {
+        item {
+            Text(
+                text = stringResource(id = R.string.featured_short_videos),
+                modifier = Modifier
+                    .padding(5.dp)
+                    .wrapContentHeight(),
+                fontSize = 18.sp
+            )
+        }
 
-                    item {
-                        Text(
-                            text = stringResource(id = R.string.featured_short_videos),
-                            modifier = Modifier
-                                .padding(5.dp)
-                                .wrapContentHeight(),
-                            fontSize = 18.sp
-                        )
-                    }
-
-                    items(list) {
-                        val data = it.data
-                        WinnowItem(
-                            avatarUrl = data.author?.icon ?: "",
-                            title = data.title ?: "",
-                            subtitle = "${data.author?.name} #${data.category}       ▶${secondsToHours(data.duration ?: 0)}",
-                            coverUrl = data.cover?.detail ?: ""
-                        )
-                    }
-                }
+        items(list.dailyIssueList.size) { index ->
+            val data = list.dailyIssueList[index].data
+            WinnowItem(
+                avatarUrl = data.author?.icon ?: "",
+                title = data.title ?: "",
+                subtitle = "${data.author?.name} #${data.category}       ▶${secondsToHours(data.duration ?: 0)}",
+                coverUrl = data.cover?.detail ?: ""
+            ) {
+                viewModel.update(index)
             }
         }
-        is Fail -> {
-            Text(
-                text = (async as? Fail<List<DailyIssueModel>>)?.error?.message ?: "error",
-
-                modifier = Modifier.fillMaxSize(),
-                fontSize = 18.sp,
-                color = Color.Black
-            )
-        }
-        is Loading -> {
-            Text(
-                text = stringResource(id = R.string.loading),
-                modifier = Modifier.fillMaxSize(),
-                fontSize = 18.sp,
-                color = Color.Black
-            )
-        }
-        else -> {
-
-        }
     }
-
+//    when(async) {
+//        is Success -> {
+//            val listState = rememberLazyListState()
+//
+//            async()?.let { list ->
+//                LazyColumn(state = listState) {
+//
+//                    item {
+//                        Text(
+//                            text = stringResource(id = R.string.featured_short_videos),
+//                            modifier = Modifier
+//                                .padding(5.dp)
+//                                .wrapContentHeight(),
+//                            fontSize = 18.sp
+//                        )
+//                    }
+//
+//                    items(list) {
+//                        val data = it.data
+//                        WinnowItem(
+//                            avatarUrl = data.author?.icon ?: "",
+//                            title = data.title ?: "",
+//                            subtitle = "${data.author?.name} #${data.category}       ▶${secondsToHours(data.duration ?: 0)}",
+//                            coverUrl = data.cover?.detail ?: ""
+//                        ) {
+//                           viewModel.update()
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        is Fail -> {
+//            Text(
+//                text = (async as? Fail<List<DailyIssueModel>>)?.error?.message ?: "error",
+//
+//                modifier = Modifier.fillMaxSize(),
+//                fontSize = 18.sp,
+//                color = Color.Black
+//            )
+//        }
+//        is Loading -> {
+//            Text(
+//                text = stringResource(id = R.string.loading),
+//                modifier = Modifier.fillMaxSize(),
+//                fontSize = 18.sp,
+//                color = Color.Black
+//            )
+//        }
+//        else -> {
+//
+//        }
 }

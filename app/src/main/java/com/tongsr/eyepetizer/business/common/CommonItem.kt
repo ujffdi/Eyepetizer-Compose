@@ -1,5 +1,6 @@
 package com.tongsr.eyepetizer.business.common
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,6 +43,7 @@ fun WinnowItem(
     coverUrl: String,
     clickable: (() -> Unit)? = null
 ) {
+    Log.e("tongsr", "执行 WinnowItem")
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()

@@ -1,5 +1,6 @@
 package com.tongsr.eyepetizer.business.home.dailyissue
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.tongsr.eyepetizer.data.RemoteService
 import javax.inject.Inject
 
@@ -12,9 +13,11 @@ import javax.inject.Inject
  */
 class DailyIssueRepository @Inject constructor(private val service: RemoteService) {
 
-    suspend fun getDailyIssueData(): List<DailyIssueModel> {
+    suspend fun getDailyIssueData(): SnapshotStateList<DailyIssueModel> {
         val dailyIssueData = service.getDailyIssueData()
-        return dailyIssueData.itemList ?: emptyList()
+        return SnapshotStateList<DailyIssueModel>().apply {
+            addAll(dailyIssueData.itemList ?: emptyList())
+        }
     }
 
 }
