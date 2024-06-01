@@ -6,34 +6,30 @@ package com.tongsr.eyepetizer.business.home.dailyissue
  * @description 日报 Model
  */
 
-data class DailyIssueModel(
-    val data: Data, val id: Int
+class DailyIssueModel(
+    val data: Data
 )
 
-data class Data(
-    val id: Int? = 0,
+class Data(
+    val id: Int? = null,
     val author: Author? = null,
     val category: String? = null,
     val cover: Cover? = null,
     val date: Long? = null,
     val description: String? = null,
-    var duration: Int? = null,
+    val duration: Int? = null,
     val title: String? = null,
 )
 
 class Author(
-    val description: String, val follow: Follow, val icon: String, val id: Int, val name: String
-)
-
-class Consumption(
-    val collectionCount: Int, val realCollectionCount: Int, val replyCount: Int, val shareCount: Int
+    val icon: String, val name: String? = null
 )
 
 class Cover(
-    val blurred: String,
-    val detail: String,
-    val feed: String,
-    val homepage: String,
+    val blurred: String ? = null,
+    val detail: String? = null,
+    val feed: String? = null,
+    val homepage: String? = null,
 )
 
 class Provider(

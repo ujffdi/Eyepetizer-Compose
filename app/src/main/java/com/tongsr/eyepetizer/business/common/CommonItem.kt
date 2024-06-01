@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -44,15 +47,14 @@ fun WinnowItem(
     clickable: (() -> Unit)? = null
 ) {
     Log.e("tongsr", "执行 WinnowItem")
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(bottom = 30.dp)
-            .clickable {
-                clickable?.invoke()
-            }
-    ) {
+
+    ConstraintLayout(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(bottom = 30.dp)
+        .clickable {
+            clickable?.invoke()
+        }) {
         val (coverRef, titleRef, avatarRef, subtitleRef) = createRefs()
 
         AsyncImage(
@@ -103,9 +105,10 @@ fun WinnowItem(
                     width = Dimension.preferredWrapContent
                 },
             fontSize = 16.sp,
+            color = Color.Black,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            fontWeight = FontWeight.W600
+            fontWeight = FontWeight.W900
         )
 
         Text(
@@ -114,7 +117,7 @@ fun WinnowItem(
                 .constrainAs(subtitleRef) {
                     start.linkTo(avatarRef.end)
                     top.linkTo(titleRef.bottom)
-                }, fontSize = 14.sp
+                }, fontSize = 14.sp, color = Color.Black
         )
     }
 }

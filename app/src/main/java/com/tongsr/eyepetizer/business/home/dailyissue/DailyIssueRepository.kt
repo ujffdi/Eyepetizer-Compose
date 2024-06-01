@@ -1,6 +1,8 @@
 package com.tongsr.eyepetizer.business.home.dailyissue
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import com.tongsr.eyepetizer.data.RemoteService
 import javax.inject.Inject
 
@@ -15,9 +17,7 @@ class DailyIssueRepository @Inject constructor(private val service: RemoteServic
 
     suspend fun getDailyIssueData(): SnapshotStateList<DailyIssueModel> {
         val dailyIssueData = service.getDailyIssueData()
-        return SnapshotStateList<DailyIssueModel>().apply {
-            addAll(dailyIssueData.itemList ?: emptyList())
-        }
+        return dailyIssueData.itemList?.toMutableStateList() ?: mutableStateListOf()
     }
 
 }

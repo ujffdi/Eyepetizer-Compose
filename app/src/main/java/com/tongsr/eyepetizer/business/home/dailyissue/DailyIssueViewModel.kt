@@ -1,7 +1,11 @@
 package com.tongsr.eyepetizer.business.home.dailyissue
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.hilt.AssistedViewModelFactory
 import com.airbnb.mvrx.hilt.hiltMavericksViewModelFactory
 import dagger.assisted.Assisted
@@ -25,28 +29,39 @@ class DailyIssueViewModel @AssistedInject constructor(
         getDailyIssueData()
     }
 
-    fun getDailyIssueData() {
-        viewModelScope.launch {
-            val dailyIssueData = repository.getDailyIssueData()
-            setState {
-                copy(dailyIssueList = dailyIssueData)
-            }
+    fun getDailyIssueData() = withState { state ->
+        if (state.dailyIssueListResult is Loading) return@withState
+        suspend {
+            repository.getDailyIssueData()
+        }.execute {
+            copy(dailyIssueListResult = it)
         }
     }
 
-    fun update(id: Int) = withState { state ->
+    /**
+     * 这是重新赋值整个 list，所以会导致屏幕内可见的 item 刷新。
+     */
+    fun updateData(currentIndex: Int) = withState { state ->
+        val currentList = state.dailyIssueListResult() ?: return@withState
+        val currentDailyIssueModel = currentList[currentIndex]
+        val newList = currentList.toMutableStateList()
+
+        newList[currentIndex] = DailyIssueModel(
+            data = Data(
+                currentDailyIssueModel.data.id,
+                currentDailyIssueModel.data.author,
+                currentDailyIssueModel.data.category,
+                currentDailyIssueModel.data.cover,
+                currentDailyIssueModel.data.date,
+                currentDailyIssueModel.data.description,
+                currentDailyIssueModel.data.duration,
+                "test title"
+            )
+        )
         setState {
-            val newList = state.dailyIssueList.mapIndexed { index, dailyIssueModel ->
-                if (index == id) {
-                    dailyIssueModel.copy(data = dailyIssueModel.data.copy(duration = 600))
-                } else {
-                    dailyIssueModel
-                }
-            }
-            copy(dailyIssueList = newList)
+            copy(dailyIssueListResult = Success(newList))
         }
     }
-
 
     @AssistedFactory
     interface Factory : AssistedViewModelFactory<DailyIssueViewModel, DailyIssueState> {

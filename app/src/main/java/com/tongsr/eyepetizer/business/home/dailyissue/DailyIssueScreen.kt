@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -24,7 +26,6 @@ import com.airbnb.mvrx.compose.mavericksViewModel
 import com.tongsr.eyepetizer.R
 import com.tongsr.eyepetizer.business.common.WinnowItem
 import com.tongsr.eyepetizer.util.secondsToHours
-import kotlin.random.Random
 
 /**
  * @author tongsr
@@ -36,81 +37,74 @@ import kotlin.random.Random
 @Composable
 fun DailyIssueScreen(viewModel: DailyIssueViewModel = mavericksViewModel()) {
     Log.e("tongsr", "执行 DailyIssueScreen")
-    val list by viewModel.collectAsState()
-    val listState = rememberLazyListState()
-    LazyColumn(state = listState) {
 
-        item {
-            Text(
-                text = stringResource(id = R.string.featured_short_videos),
-                modifier = Modifier
-                    .padding(5.dp)
-                    .wrapContentHeight(),
-                fontSize = 18.sp
-            )
-        }
+    val dailyIssueListResult by viewModel.collectAsState(DailyIssueState::dailyIssueListResult)
 
-        items(list.dailyIssueList.size) { index ->
-            val data = list.dailyIssueList[index].data
-            WinnowItem(
-                avatarUrl = data.author?.icon ?: "",
-                title = data.title ?: "",
-                subtitle = "${data.author?.name} #${data.category}       ▶${secondsToHours(data.duration ?: 0)}",
-                coverUrl = data.cover?.detail ?: ""
-            ) {
-                viewModel.update(index)
+    when (dailyIssueListResult) {
+        is Success -> {
+            val listState = rememberLazyListState()
+
+            LazyColumn(state = listState) {
+                item {
+                    Text(
+                        text = stringResource(id = R.string.featured_short_videos),
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .wrapContentHeight(),
+                        color = Color.Black,
+                        fontSize = 18.sp
+                    )
+                }
+                items(dailyIssueListResult()?.size ?: 0) { index ->
+                    val itemData = dailyIssueListResult()!![index].data
+                    WinnowItem(
+                        avatarUrl = itemData.author?.icon ?: "",
+                        title = itemData.title ?: "",
+                        subtitle = "${itemData.author?.name} #${itemData.category}       ▶${
+                            secondsToHours(
+                                itemData.duration ?: 0
+                            )
+                        }",
+                        coverUrl = itemData.cover?.detail ?: ""
+                    ) {
+                        // 可以局部刷新
+                        // 前提是用 SnapshotStateList
+                        // SnapshotStateList 其实是 mutableStateListOf() 函数
+                        // SnapshotStateList 可以监听内部属性的变化从而达到局部刷新的效果
+                        dailyIssueListResult()!![index] = DailyIssueModel(
+                            data = Data(
+                                itemData.id,
+                                itemData.author,
+                                itemData.category,
+                                itemData.cover,
+                                itemData.date,
+                                itemData.description,
+                                itemData.duration,
+                                "test title"
+                            )
+                        )
+
+//                        viewModel.updateData(index)
+                    }
+                }
             }
         }
+
+        is Fail -> Text(
+            text = (dailyIssueListResult as? Fail<List<DailyIssueModel>>)?.error?.message ?: "error",
+            modifier = Modifier.fillMaxSize(), fontSize = 18.sp, color = Color.Black
+        )
+
+        is Loading -> Text(
+            text = stringResource(id = R.string.loading),
+            modifier = Modifier.fillMaxSize(),
+            fontSize = 18.sp,
+            color = Color.Black
+        )
+
+        else -> {
+
+        }
+
     }
-//    when(async) {
-//        is Success -> {
-//            val listState = rememberLazyListState()
-//
-//            async()?.let { list ->
-//                LazyColumn(state = listState) {
-//
-//                    item {
-//                        Text(
-//                            text = stringResource(id = R.string.featured_short_videos),
-//                            modifier = Modifier
-//                                .padding(5.dp)
-//                                .wrapContentHeight(),
-//                            fontSize = 18.sp
-//                        )
-//                    }
-//
-//                    items(list) {
-//                        val data = it.data
-//                        WinnowItem(
-//                            avatarUrl = data.author?.icon ?: "",
-//                            title = data.title ?: "",
-//                            subtitle = "${data.author?.name} #${data.category}       ▶${secondsToHours(data.duration ?: 0)}",
-//                            coverUrl = data.cover?.detail ?: ""
-//                        ) {
-//                           viewModel.update()
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        is Fail -> {
-//            Text(
-//                text = (async as? Fail<List<DailyIssueModel>>)?.error?.message ?: "error",
-//
-//                modifier = Modifier.fillMaxSize(),
-//                fontSize = 18.sp,
-//                color = Color.Black
-//            )
-//        }
-//        is Loading -> {
-//            Text(
-//                text = stringResource(id = R.string.loading),
-//                modifier = Modifier.fillMaxSize(),
-//                fontSize = 18.sp,
-//                color = Color.Black
-//            )
-//        }
-//        else -> {
-//
-//        }
 }

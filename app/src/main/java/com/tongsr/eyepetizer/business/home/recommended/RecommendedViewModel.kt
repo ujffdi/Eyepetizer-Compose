@@ -20,8 +20,7 @@ import dagger.assisted.AssistedInject
  */
 class RecommendedViewModel @AssistedInject constructor(
     @Assisted state: RecommendedState,
-    private val repository: RecommendedRepository,
-    val moshi: Moshi
+    private val repository: RecommendedRepository
 ) : MavericksViewModel<RecommendedState>(state) {
 
     init {
